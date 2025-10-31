@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:myapp/catalogo.dart';
 
 class NovedadBolsoScreen extends StatelessWidget {
   const NovedadBolsoScreen({super.key});
@@ -40,6 +41,7 @@ class NovedadBolsoScreen extends StatelessWidget {
               ),
               _buildDrawerItem(icon: Icons.person_outline, text: 'PERFIL'),
               _buildDrawerItem(icon: Icons.sync, text: 'CAMBIO DE TIENDA'),
+              _buildDrawerItem(icon: Icons.shopping_bag_outlined, text: 'STOCK'),
               _buildDrawerItem(icon: Icons.exit_to_app, text: 'SALIR'),
             ],
           ),
@@ -48,24 +50,38 @@ class NovedadBolsoScreen extends StatelessWidget {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          // Background Image
           Image.network(
             'https://res.cloudinary.com/dt1rhz43z/image/upload/v1760660013/bolsofondo_wwk2m9.jpg',
             fit: BoxFit.cover,
           ),
-          // Dark Overlay
           Container(
             color: Colors.black.withOpacity(0.45),
           ),
           Center(
-              child: Text(
-            'Bienvenido a Novedad del Bolso',
-            style: GoogleFonts.roboto(
-              color: Colors.white,
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Bienvenido a Novedad del Bolso',
+                  style: GoogleFonts.roboto(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 30),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const CatalogoScreen()),
+                    );
+                  },
+                  child: const Text('Ver Catálogo'),
+                ),
+              ],
             ),
-          ))
+          ),
         ],
       ),
     );

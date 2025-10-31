@@ -31,7 +31,7 @@ class ProductDetailScreen extends StatelessWidget {
                   color: Colors.grey[200],
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Image.asset('https://res.cloudinary.com/dt1rhz43z/image/upload/v1760060129/modelbolso_1_monp37.jpg'),
+                child: Image.network('https://res.cloudinary.com/dt1rhz43z/image/upload/v1760060129/modelbolso_1_monp37.jpg'),
               ),
               const SizedBox(height: 20),
               Text(
@@ -61,6 +61,28 @@ class ProductDetailScreen extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 30),
+              ElevatedButton(
+                onPressed: () {
+                  // Lógica para ver la disponibilidad
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    side: const BorderSide(color: Colors.black87),
+                  ),
+                ),
+                child: Text(
+                  'VER DISPONIBILIDAD',
+                  style: GoogleFonts.montserrat(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 15),
               ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(

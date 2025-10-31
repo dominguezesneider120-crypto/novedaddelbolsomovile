@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/novedad_bolso_screen.dart';
-import 'package:myapp/catalogo.dart';
-import 'package:myapp/screens/product_detail_screen.dart';
-
+import 'package:myapp/screens/roles_screen/roles.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,14 +11,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Novedad del Bolso',
+      title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.brown,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+        primarySwatch: Colors.blue,
       ),
-      home:  CatalogoScreen(),
-
+      home: const RolesScreen(),
     );
   }
 }
