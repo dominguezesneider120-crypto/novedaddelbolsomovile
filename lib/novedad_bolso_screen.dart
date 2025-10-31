@@ -87,7 +87,7 @@ class NovedadBolsoScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDrawerItem({required IconData icon, required String text}) {
+  Widget _buildDrawerItem({required IconData icon, required String text, VoidCallback? onTap}) {
     return ListTile(
       leading: Icon(icon, color: Colors.white, size: 30),
       title: Text(
@@ -98,9 +98,7 @@ class NovedadBolsoScreen extends StatelessWidget {
           fontSize: 18,
         ),
       ),
-      onTap: () {
-        // Handle drawer item tap
-      },
+      onTap: onTap,
     );
   }
 }

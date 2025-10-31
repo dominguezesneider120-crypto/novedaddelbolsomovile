@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/splash_screen.dart';
+import 'package:myapp/Home/login.dart';
+import 'package:myapp/catalogo.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,13 +13,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'La Novedad del Bolso',
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        primarySwatch: Colors.blue,
       ),
-      home: const SplashScreen(),
-      home: const SplashScreen(),
+      home: const LoginScreen(),
     );
   }
 }

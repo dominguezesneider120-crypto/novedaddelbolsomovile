@@ -9,8 +9,63 @@ class CatalogoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Catálogo', style: GoogleFonts.oswald(fontSize: 24, fontWeight: FontWeight.bold)),
-        backgroundColor: Colors.brown,
+        backgroundColor: Color(0xFF5D4037),
+        title: Text('INVENTARIO', style: TextStyle(color: Colors.white)),
+        iconTheme: IconThemeData(color: Colors.white),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.more_vert, color: Colors.white),
+            onPressed: () {},
+          ),
+        ],
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            const DrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.black,
+              ),
+              child: Text(
+                'Menú',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                ),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.person),
+              title: const Text('Perfil'),
+              onTap: () {
+                // Navegar a la pantalla de perfil
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.store),
+              title: const Text('Cambio de tienda'),
+              onTap: () {
+                // Lógica para cambiar de tienda
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.inventory),
+              title: const Text('Stock'),
+              onTap: () {
+                // Navegar a la pantalla de stock
+              },
+            ),
+            const Divider(),
+            ListTile(
+              leading: const Icon(Icons.exit_to_app),
+              title: const Text('Salir'),
+              onTap: () {
+                // Lógica para cerrar sesión
+              },
+            ),
+          ],
+        ),
       ),
       body: GridView.builder(
         padding: const EdgeInsets.all(10.0),
