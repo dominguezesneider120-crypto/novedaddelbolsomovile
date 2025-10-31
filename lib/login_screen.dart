@@ -91,10 +91,10 @@ class LoginScreen extends StatelessWidget {
       style: const TextStyle(color: Colors.white),
       decoration: InputDecoration(
         hintText: hintText,
-        hintStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
+        hintStyle: const TextStyle(color: Color.fromRGBO(255, 255, 255, 0.7)),
         prefixIcon: Icon(icon, color: Colors.white),
         filled: true,
-        fillColor: Colors.white.withOpacity(0.2),
+        fillColor: const Color.fromRGBO(255, 255, 255, 0.2),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30),
           borderSide: BorderSide.none,

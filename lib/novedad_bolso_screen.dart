@@ -20,43 +20,69 @@ class NovedadBolsoScreen extends StatelessWidget {
         ),
         centerTitle: true,
       ),
-      drawer: const _AppDrawer(),
-      body: const _ContentBody(),
-    );
-  }
-}
-
-class _AppDrawer extends StatelessWidget {
-  const _AppDrawer();
-
-  @override
-  Widget build(BuildContext context) {
-    return Drawer(
-      child: Container(
-        color: const Color(0xFF4A2B1A),
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: const BoxDecoration(
-                color: Color(0xFF3E2211),
-              ),
-              child: Text(
-                'Menú',
-                style: GoogleFonts.oswald(
-                  color: Colors.white,
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
+      drawer: Drawer(
+        child: Container(
+          color: const Color(0xFF4A2B1A),
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: [
+              DrawerHeader(
+                decoration: const BoxDecoration(
+                  color: Color(0xFF3E2211),
+                ),
+                child: Text(
+                  'Menú',
+                  style: GoogleFonts.oswald(
+                    color: Colors.white,
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
-            ),
-            _buildDrawerItem(icon: Icons.person_outline, text: 'PERFIL'),
-            _buildDrawerItem(icon: Icons.sync, text: 'CAMBIO DE TIENDA'),
-            _buildDrawerItem(
-                icon: Icons.shopping_bag_outlined, text: 'STOCK'),
-            _buildDrawerItem(icon: Icons.exit_to_app, text: 'SALIR'),
-          ],
+              _buildDrawerItem(icon: Icons.person_outline, text: 'PERFIL'),
+              _buildDrawerItem(icon: Icons.sync, text: 'CAMBIO DE TIENDA'),
+              _buildDrawerItem(icon: Icons.shopping_bag_outlined, text: 'STOCK'),
+              _buildDrawerItem(icon: Icons.exit_to_app, text: 'SALIR'),
+            ],
+          ),
         ),
+      ),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          Image.network(
+            'https://res.cloudinary.com/dt1rhz43z/image/upload/v1760660013/bolsofondo_wwk2m9.jpg',
+            fit: BoxFit.cover,
+          ),
+          Container(
+            color: const Color.fromRGBO(0, 0, 0, 0.45),
+          ),
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Bienvenido a Novedad del Bolso',
+                  style: GoogleFonts.roboto(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 30),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const CatalogoScreen()),
+                    );
+                  },
+                  child: const Text('Ver Catálogo'),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -73,52 +99,6 @@ class _AppDrawer extends StatelessWidget {
         ),
       ),
       onTap: onTap,
-    );
-  }
-}
-
-class _ContentBody extends StatelessWidget {
-  const _ContentBody();
-
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      fit: StackFit.expand,
-      children: [
-        Image.network(
-          'https://res.cloudinary.com/dt1rhz43z/image/upload/v1760660013/bolsofondo_wwk2m9.jpg',
-          fit: BoxFit.cover,
-        ),
-        Container(
-          color: Colors.black.withAlpha(115),
-        ),
-        Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Bienvenido a Novedad del Bolso',
-                style: GoogleFonts.roboto(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 30),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const CatalogoScreen()),
-                  );
-                },
-                child: const Text('Ver Catálogo'),
-              ),
-            ],
-          ),
-        ),
-      ],
     );
   }
 }

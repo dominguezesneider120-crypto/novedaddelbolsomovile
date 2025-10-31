@@ -130,14 +130,14 @@ class LoginScreen extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: const Color(0xFF4E342E).withAlpha(230),
+              color: const Color.fromRGBO(78, 52, 46, 0.9),
               borderRadius: BorderRadius.circular(15),
-              boxShadow: [
+              boxShadow: const [
                 BoxShadow(
-                  color: Colors.black.withAlpha(128),
+                  color: Color.fromRGBO(0, 0, 0, 0.5),
                   spreadRadius: 2,
                   blurRadius: 10,
-                  offset: const Offset(0, 5),
+                  offset: Offset(0, 5),
                 ),
               ],
             ),
@@ -147,7 +147,7 @@ class LoginScreen extends StatelessWidget {
           Container(
             height: 60,
             width: 4,
-            color: Colors.white.withAlpha(179),
+            color: const Color.fromRGBO(255, 255, 255, 0.7),
           ),
           const SizedBox(width: 20),
           Text(
@@ -156,11 +156,11 @@ class LoginScreen extends StatelessWidget {
               fontSize: 22,
               fontWeight: FontWeight.bold,
               color: Colors.white,
-              shadows: [
+              shadows: const [
                 Shadow(
                   blurRadius: 10.0,
-                  color: Colors.black.withAlpha(179),
-                  offset: const Offset(2.0, 2.0),
+                  color: Color.fromRGBO(0, 0, 0, 0.7),
+                  offset: Offset(2.0, 2.0),
                 ),
               ],
             ),

@@ -31,17 +31,11 @@ class CatalogoScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF5D4037),
-        title: Text('INVENTARIO', style: GoogleFonts.oswald(color: Colors.white, fontWeight: FontWeight.bold)),
+        title: const Text('INVENTARIO', style: TextStyle(color: Colors.white)),
         iconTheme: const IconThemeData(color: Colors.white),
         actions: [
           IconButton(
-            icon: const Icon(Icons.search, color: Colors.white),
-            tooltip: 'Buscar',
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: const Icon(Icons.add_circle_outline, color: Colors.white),
-            tooltip: 'Añadir Producto',
+            icon: const Icon(Icons.more_vert, color: Colors.white),
             onPressed: () {},
           ),
         ],
