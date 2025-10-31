@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
       title: 'La Novedad del Bolso',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: const LoginScreen(),
     );

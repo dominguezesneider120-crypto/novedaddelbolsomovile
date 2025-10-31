@@ -14,6 +14,8 @@ class RolesScreenState extends State<RolesScreen>
   String? _selectedRole;
   late AnimationController _animationController;
   late Animation<double> _scaleAnimation;
+  bool _isAdministradoraHighlighted = false;
+  bool _isPersonalHighlighted = false;
 
   @override
   void initState() {
@@ -36,20 +38,17 @@ class RolesScreenState extends State<RolesScreen>
     super.dispose();
   }
 
-  void _onButtonPressed() {
-    _animationController.forward().then((_) {
-      _animationController.reverse();
-      // Aquí puedes poner la lógica de navegación o login
-      debugPrint('Rol seleccionado: $_selectedRole');
-    });
+  void _handleIngresarTap() {
+    // Aquí puedes poner la lógica de navegación o login
+    debugPrint('Rol seleccionado: $_selectedRole');
   }
 
   @override
   Widget build(BuildContext context) {
-    const Color primarySeedColor = Color.fromARGB(255, 94, 49, 12);
+    const Color primaryColor = Color(0xFF381C09);
 
     return Scaffold(
-      backgroundColor: const Color(0xFF381C09),
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
@@ -61,7 +60,7 @@ class RolesScreenState extends State<RolesScreen>
                 style: GoogleFonts.oswald(
                   fontSize: 48,
                   fontWeight: FontWeight.bold,
-                  color: const Color.fromARGB(255, 120, 120, 120),
+                  color: primaryColor,
                 ),
               ),
               const SizedBox(height: 40),
@@ -71,12 +70,18 @@ class RolesScreenState extends State<RolesScreen>
                 title: 'Administradora',
                 icon: Icons.person_rounded,
                 isSelected: _selectedRole == 'Administradora',
+                isHighlighted: _isAdministradoraHighlighted,
                 onTap: () {
                   setState(() {
                     _selectedRole = 'Administradora';
                   });
                 },
-                seedColor: const Color.fromARGB(255, 255, 255, 255),
+                onHighlightChanged: (isHighlighted) {
+                  setState(() {
+                    _isAdministradoraHighlighted = isHighlighted;
+                  });
+                },
+                seedColor: primaryColor, // Color unificado
               ),
               const SizedBox(height: 20),
 
@@ -85,33 +90,51 @@ class RolesScreenState extends State<RolesScreen>
                 title: 'Personal',
                 icon: Icons.person_outline_rounded,
                 isSelected: _selectedRole == 'Personal',
+                isHighlighted: _isPersonalHighlighted,
                 onTap: () {
                   setState(() {
                     _selectedRole = 'Personal';
                   });
                 },
-                seedColor: const Color.fromARGB(255, 255, 255, 255),
+                onHighlightChanged: (isHighlighted) {
+                  setState(() {
+                    _isPersonalHighlighted = isHighlighted;
+                  });
+                },
+                seedColor: primaryColor, // Color unificado
               ),
               const Spacer(),
 
               // Botón Ingresar animado
               Center(
                 child: GestureDetector(
-                  onTapDown: (_) => _animationController.forward(),
-                  onTapUp: (_) => _animationController.reverse(),
-                  onTapCancel: () => _animationController.reverse(),
-                  onTap: _onButtonPressed,
+                  onTapDown: (_) {
+                    _animationController.forward();
+                    setState(() {
+                    });
+                  },
+                  onTapUp: (_) {
+                    _animationController.reverse();
+                    setState(() {
+                    });
+                    _handleIngresarTap();
+                  },
+                  onTapCancel: () {
+                    _animationController.reverse();
+                    setState(() {
+                    });
+                  },
                   child: ScaleTransition(
                     scale: _scaleAnimation,
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 80, vertical: 18),
                       decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 255, 255, 255),
+                        color: primaryColor,
                         borderRadius: BorderRadius.circular(16),
                         boxShadow: [
                           BoxShadow(
-                            color: primarySeedColor.withAlpha(77),
+                            color: primaryColor.withAlpha(77),
                             spreadRadius: 2,
                             blurRadius: 15,
                             offset: const Offset(0, 5),
@@ -120,8 +143,8 @@ class RolesScreenState extends State<RolesScreen>
                       ),
                       child: Text(
                         'Ingresar',
-                        style: GoogleFonts.playfairDisplay(
-                          color: const Color(0xFF381C09),
+                        style: GoogleFonts.roboto(
+                          color: Colors.white,
                           fontSize: 20,
                           fontWeight: FontWeight.w600,
                         ),
@@ -141,26 +164,31 @@ class RolesScreenState extends State<RolesScreen>
   Widget _buildRoleOption({
     required String title,
     required IconData icon,
-    Color? iconColor,
     required bool isSelected,
     required VoidCallback onTap,
     required Color seedColor,
+    bool isHighlighted = false,
+    ValueChanged<bool>? onHighlightChanged,
   }) {
+    final Color backgroundColor = isHighlighted ? seedColor.withOpacity(0.8) : (isSelected ? seedColor : Colors.white);
+    final Color contentColor = (isHighlighted || isSelected) ? Colors.white : seedColor;
+
     return InkWell(
       onTap: onTap,
-      splashColor: seedColor.withAlpha(26),
-      highlightColor: seedColor.withAlpha(13),
+      onHighlightChanged: onHighlightChanged,
+      splashColor: seedColor.withAlpha(30),
+      highlightColor: Colors.transparent, // Usamos nuestro propio efecto
       borderRadius: BorderRadius.circular(16),
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: isSelected ? seedColor.withAlpha(26) : Colors.grey[50],
+          color: backgroundColor,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: isSelected ? seedColor : Colors.grey[200]!,
+            color: isSelected ? seedColor : Colors.grey[300]!,
             width: 1.5,
           ),
-          boxShadow: isSelected
+          boxShadow: (isSelected || isHighlighted)
               ? [
                   BoxShadow(
                     color: seedColor.withAlpha(51),
@@ -168,24 +196,28 @@ class RolesScreenState extends State<RolesScreen>
                     offset: const Offset(0, 4),
                   )
                 ]
-              : [],
+              : [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.1),
+                    blurRadius: 10,
+                    offset: const Offset(0, 2),
+                  )
+                ],
         ),
         child: Row(
           children: [
             Icon(
               icon,
               size: 40,
-              color: isSelected
-                  ? (iconColor ?? seedColor)
-                  : (iconColor ?? Colors.grey[600]),
+              color: contentColor,
             ),
             const SizedBox(width: 24),
             Text(
               title,
-              style: GoogleFonts.playfairDisplay(
+              style: GoogleFonts.roboto(
                 fontSize: 20,
                 fontWeight: FontWeight.w500,
-                color: Colors.black87,
+                color: contentColor,
               ),
             ),
           ],
