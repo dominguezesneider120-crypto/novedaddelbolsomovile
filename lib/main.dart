@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/Home/login.dart';
-import 'package:myapp/catalogo.dart';
+import 'package:novedades_del_bolso/Home/login.dart';
 
 void main() {
-  runApp(const MyApp());
   runApp(const MyApp());
 }
 
@@ -13,10 +11,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'La Novedad del Bolso',
+      title: 'Novedades del Bolso',
       theme: ThemeData(
         primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: const LoginScreen(),
     );

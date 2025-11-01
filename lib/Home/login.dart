@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:myapp/novedad_bolso_screen.dart';
+import 'package:novedades_del_bolso/screens/roles_screen/roles.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -89,7 +89,7 @@ class _LoginButtonState extends State<_LoginButton> {
       onExit: (_) => setState(() => _isHovered = false),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: _isHovered ? Colors.grey[700] : Colors.grey[300]!.withOpacity(0.9),
+          backgroundColor: _isHovered ? Colors.grey[700] : Colors.grey[300]!.withAlpha(230),
           foregroundColor: _isHovered ? Colors.white : Colors.black,
           minimumSize: const Size(200, 50),
           shape: RoundedRectangleBorder(
@@ -99,7 +99,7 @@ class _LoginButtonState extends State<_LoginButton> {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => const NovedadBolsoScreen()),
+            MaterialPageRoute(builder: (context) => const RolesScreen()),
           );
         },
         child: Text(

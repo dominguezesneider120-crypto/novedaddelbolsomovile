@@ -170,7 +170,7 @@ class RolesScreenState extends State<RolesScreen>
     bool isHighlighted = false,
     ValueChanged<bool>? onHighlightChanged,
   }) {
-    final Color backgroundColor = isHighlighted ? seedColor.withOpacity(0.8) : (isSelected ? seedColor : Colors.white);
+    final Color backgroundColor = isHighlighted ? seedColor.withAlpha(204) : (isSelected ? seedColor : Colors.white);
     final Color contentColor = (isHighlighted || isSelected) ? Colors.white : seedColor;
 
     return InkWell(
@@ -198,7 +198,7 @@ class RolesScreenState extends State<RolesScreen>
                 ]
               : [
                   BoxShadow(
-                    color: Colors.grey.withOpacity(0.1),
+                    color: Colors.grey.withAlpha(25),
                     blurRadius: 10,
                     offset: const Offset(0, 2),
                   )
