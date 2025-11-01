@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:novedades_del_bolso/catalogo.dart';
 
 class RolesScreen extends StatefulWidget {
   const RolesScreen({super.key});
@@ -39,8 +40,19 @@ class RolesScreenState extends State<RolesScreen>
   }
 
   void _handleIngresarTap() {
-    // Aquí puedes poner la lógica de navegación o login
-    debugPrint('Rol seleccionado: $_selectedRole');
+    if (_selectedRole != null) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const CatalogoScreen()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Por favor, selecciona un rol para continuar.'),
+          backgroundColor: Colors.redAccent,
+        ),
+      );
+    }
   }
 
   @override
