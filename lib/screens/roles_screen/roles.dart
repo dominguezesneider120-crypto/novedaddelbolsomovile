@@ -238,3 +238,7 @@ class RolesScreenState extends State<RolesScreen>
     );
   }
 }
+
+class CatalogoScreen {
+  const CatalogoScreen();
+}
