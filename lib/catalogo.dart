@@ -2,29 +2,30 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-// 1. Modelo de datos para un producto
-class Producto {
-  final String nombre;
-  final double precio;
-  final String imageUrl;
+class Product {
+  String imageUrl;
+  double price;
+  String name;
 
-  Producto({required this.nombre, required this.precio, required this.imageUrl});
+  Product({required this.imageUrl, required this.price, required this.name});
 }
 
-// 2. Datos de ejemplo (reemplazar con datos de una base de datos en el futuro)
-final List<Producto> inventario = [
-  Producto(nombre: 'Bolso Clásico de Cuero', precio: 120.00, imageUrl: 'https://picsum.photos/seed/bolso1/400/500'),
-  Producto(nombre: 'Bolso Tote Moderno', precio: 85.50, imageUrl: 'https://picsum.photos/seed/bolso2/400/500'),
-  Producto(nombre: 'Mochila Urbana', precio: 95.00, imageUrl: 'https://picsum.photos/seed/bolso3/400/500'),
-  Producto(nombre: 'Bolso de Noche Elegante', precio: 150.75, imageUrl: 'https://picsum.photos/seed/bolso4/400/500'),
-  Producto(nombre: 'Bandolera Casual', precio: 60.00, imageUrl: 'https://picsum.photos/seed/bolso5/400/500'),
-  Producto(nombre: 'Bolso de Viaje Espacioso', precio: 180.25, imageUrl: 'https://picsum.photos/seed/bolso6/400/500'),
-  Producto(nombre: 'Cartera de Fiesta', precio: 75.00, imageUrl: 'https://picsum.photos/seed/bolso7/400/500'),
-  Producto(nombre: 'Bolso Playero', precio: 45.50, imageUrl: 'https://picsum.photos/seed/bolso8/400/500'),
-];
-
-class CatalogoScreen extends StatelessWidget {
+class CatalogoScreen extends StatefulWidget {
   const CatalogoScreen({super.key});
+
+  @override
+  State<CatalogoScreen> createState() => _CatalogoScreenState();
+}
+
+class _CatalogoScreenState extends State<CatalogoScreen> {
+  final List<Product> _products = [
+    Product(imageUrl: 'https://res.cloudinary.com/dt1rhz43z/image/upload/v1760143413/Amalia_bolso_4_zqxkzj.webp', price: 50.00, name: 'Bolso 1'),
+    Product(imageUrl: 'https://res.cloudinary.com/dt1rhz43z/image/upload/v1760143359/Amalia_bolso_3_vrkm6u.jpg', price: 60.00, name: 'Bolso 2'),
+    Product(imageUrl: 'https://res.cloudinary.com/dt1rhz43z/image/upload/v1760143272/bolso_amalia_2_qu6ewx.webp', price: 70.00, name: 'Bolso 3'),
+    Product(imageUrl: 'https://res.cloudinary.com/dt1rhz43z/image/upload/v1760142571/Bolso_amalia_1_rdjt90.webp', price: 80.00, name: 'Bolso 4'),
+    Product(imageUrl: 'https://res.cloudinary.com/dt1rhz43z/image/upload/v1760748319/bolso_amalia_5_fbsgve.webp', price: 90.00, name: 'Bolso 5'),
+    Product(imageUrl: 'https://res.cloudinary.com/dt1rhz43z/image/upload/v1760748319/bolso_amalia_6_zv8gvg.webp', price: 100.00, name: 'Bolso 6'),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -87,57 +88,61 @@ class CatalogoScreen extends StatelessWidget {
         padding: const EdgeInsets.all(12.0),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
-          crossAxisSpacing: 12.0,
-          mainAxisSpacing: 12.0,
-          childAspectRatio: 0.75, // Ajustado para mejor visualización
+          crossAxisSpacing: 10.0,
+          mainAxisSpacing: 10.0,
+          childAspectRatio: 0.75, // Adjusted for larger images
         ),
-        itemCount: inventario.length, // Usa la longitud de la lista
+        itemCount: _products.length,
         itemBuilder: (context, index) {
-          final producto = inventario[index]; // Obtiene el producto actual
+          final product = _products[index];
           return Card(
-            elevation: 4,
-            clipBehavior: Clip.antiAlias, // Para que la imagen respete los bordes redondeados
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            elevation: 5,
+            clipBehavior: Clip.antiAlias,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                   child: Image.network(
-                    producto.imageUrl, // Carga la imagen desde la URL
+                    product.imageUrl,
                     fit: BoxFit.cover,
-                    width: double.infinity,
-                    // Muestra un indicador de carga mientras la imagen se descarga
-                    loadingBuilder: (context, child, progress) {
-                      if (progress == null) return child;
-                      return const Center(child: CircularProgressIndicator());
-                    },
-                    // Muestra un ícono de error si la imagen no se puede cargar
                     errorBuilder: (context, error, stackTrace) {
-                      return const Center(child: Icon(Icons.error_outline, color: Colors.red));
+                      return const Center(
+                          child:
+                              Icon(Icons.error, color: Colors.red, size: 50));
                     },
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(10.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
                   child: Text(
-                    producto.nombre, // Muestra el nombre del producto
+                    product.name,
                     style: GoogleFonts.roboto(
                       fontSize: 15,
                       fontWeight: FontWeight.bold,
                     ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0).copyWith(bottom: 10.0),
-                  child: Text(
-                    '\$${producto.precio.toStringAsFixed(2)}', // Muestra el precio formateado
-                    style: GoogleFonts.roboto(
-                      fontSize: 14,
-                      color: Colors.grey[800],
-                      fontWeight: FontWeight.w500
+                  padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
+                  child: TextFormField(
+                    initialValue: product.price.toStringAsFixed(2),
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 14),
+                    decoration: const InputDecoration(
+                      labelText: 'Precio',
+                      isDense: true,
+                      contentPadding: EdgeInsets.symmetric(vertical: 8.0),
                     ),
+                    keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                    onChanged: (value) {
+                      setState(() {
+                        product.price = double.tryParse(value) ?? 0.0;
+                      });
+                    },
                   ),
                 ),
               ],
