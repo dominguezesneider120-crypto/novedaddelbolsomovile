@@ -1,7 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:novedades_del_bolso/catalogo.dart';
+import 'package:myapp/catalogo.dart';
+import '../catalogo.dart';
 
 class RolesScreen extends StatefulWidget {
   const RolesScreen({super.key});
@@ -122,19 +122,16 @@ class RolesScreenState extends State<RolesScreen>
                 child: GestureDetector(
                   onTapDown: (_) {
                     _animationController.forward();
-                    setState(() {
-                    });
+                    setState(() {});
                   },
                   onTapUp: (_) {
                     _animationController.reverse();
-                    setState(() {
-                    });
+                    setState(() {});
                     _handleIngresarTap();
                   },
                   onTapCancel: () {
                     _animationController.reverse();
-                    setState(() {
-                    });
+                    setState(() {});
                   },
                   child: ScaleTransition(
                     scale: _scaleAnimation,
@@ -182,8 +179,11 @@ class RolesScreenState extends State<RolesScreen>
     bool isHighlighted = false,
     ValueChanged<bool>? onHighlightChanged,
   }) {
-    final Color backgroundColor = isHighlighted ? seedColor.withAlpha(204) : (isSelected ? seedColor : Colors.white);
-    final Color contentColor = (isHighlighted || isSelected) ? Colors.white : seedColor;
+    final Color backgroundColor = isHighlighted
+        ? seedColor.withAlpha(204)
+        : (isSelected ? seedColor : Colors.white);
+    final Color contentColor =
+        (isHighlighted || isSelected) ? Colors.white : seedColor;
 
     return InkWell(
       onTap: onTap,
@@ -237,8 +237,4 @@ class RolesScreenState extends State<RolesScreen>
       ),
     );
   }
-}
-
-class CatalogoScreen {
-  const CatalogoScreen();
 }

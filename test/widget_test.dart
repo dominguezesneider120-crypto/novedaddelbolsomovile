@@ -7,8 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
-import 'package:novedades_del_bolso/main.dart';
+import 'package:myapp/main.dart';
 
 void main() {
   testWidgets('Login screen smoke test', (WidgetTester tester) async {

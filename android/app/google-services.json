@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "105396255555",
+    "project_id": "novedad-bolso",
+    "storage_bucket": "novedad-bolso.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:105396255555:android:48227972cdd41e9d3f4df6",
+        "android_client_info": {
+          "package_name": "com.example.myapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "105396255555-c2onbg8cjkt23e958q3l1e95es974769.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLJK6JJ8-zxwYBrb-qhcwZyDvHd3G8ceU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "105396255555-c2onbg8cjkt23e958q3l1e95es974769.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

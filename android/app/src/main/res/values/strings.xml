@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">myapp</string>
+
+    <!-- ID de cliente web de Firebase (para Google Sign-In) -->
+    <string name="default_web_client_id">
+        105396255555-c2onbg8cjkt23e958q3l1e95es974769.apps.googleusercontent.com
+    </string>
+</resources>

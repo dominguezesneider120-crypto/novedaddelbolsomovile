@@ -1,10 +1,51 @@
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myapp/screens/roles_screen/roles.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
+class GoogleAuthService {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email', 'profile']);
+
+  /// Inicia sesión con Google y devuelve el usuario de Firebase
+  Future<User?> signInWithGoogle() async {
+    try {
+      // Paso 1: mostrar el selector de cuentas de Google
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) return null; // usuario canceló el inicio
+
+      // Paso 2: obtener los tokens de autenticación de Google
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+
+      // Paso 3: crear las credenciales de Firebase con esos tokens
+      final OAuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      // Paso 4: autenticar con Firebase
+      final UserCredential userCredential = await _auth.signInWithCredential(credential);
+
+      // Devuelve el usuario autenticado
+      return userCredential.user;
+    } catch (e) {
+      print('Error al iniciar sesión con Google y Firebase: $e');
+      return null;
+    }
+  }
+
+  /// Cierra sesión tanto en Firebase como en Google
+  Future<void> signOut() async {
+    await _auth.signOut();
+    await _googleSignIn.signOut();
+  }
+}
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+  LoginScreen({super.key});
+
+  final authService = GoogleAuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -63,51 +104,30 @@ class LoginScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 50),
-              const _LoginButton(),
+              ElevatedButton(
+                onPressed: () async {
+                  final user = await authService.signInWithGoogle();
+                  if (user != null) {
+                    print('Usuario autenticado con Firebase: ${user.displayName}');
+                    print('Email: ${user.email}');
+
+                    // Ejemplo: ir a la pantalla de roles
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => RolesScreen()),
+                    );
+                  } else {
+                    print('Inicio de sesión cancelado o fallido');
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white,
+                  foregroundColor: Colors.black,
+                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                ),
+                child: const Text('Iniciar sesión con Google'),
+              ),
             ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _LoginButton extends StatefulWidget {
-  const _LoginButton();
-
-  @override
-  State<_LoginButton> createState() => _LoginButtonState();
-}
-
-class _LoginButtonState extends State<_LoginButton> {
-  bool _isHovered = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return MouseRegion(
-      onEnter: (_) => setState(() => _isHovered = true),
-      onExit: (_) => setState(() => _isHovered = false),
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(
-          backgroundColor: _isHovered ? Colors.grey[700] : const Color.fromRGBO(224, 224, 224, 0.9),
-          foregroundColor: _isHovered ? Colors.white : Colors.black,
-          minimumSize: const Size(200, 50),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-        ),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const RolesScreen()),
-          
-          );
-        },
-        child: Text(
-          'LOGIN',
-          style: GoogleFonts.roboto(
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
           ),
         ),
       ),
