@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:myapp/catalogo.dart';
 import 'package:myapp/screens/roles_screen/roles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -9,14 +10,15 @@ class GoogleAuthService {
   final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email', 'profile']);
 
   /// Inicia sesión con Google y devuelve el usuario de Firebase
-  Future<User?> signInWithGoogle() async {
+  Future<User?> signInWithGoogle(context) async {
     try {
       // Paso 1: mostrar el selector de cuentas de Google
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       if (googleUser == null) return null; // usuario canceló el inicio
 
       // Paso 2: obtener los tokens de autenticación de Google
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
 
       // Paso 3: crear las credenciales de Firebase con esos tokens
       final OAuthCredential credential = GoogleAuthProvider.credential(
@@ -25,7 +27,15 @@ class GoogleAuthService {
       );
 
       // Paso 4: autenticar con Firebase
-      final UserCredential userCredential = await _auth.signInWithCredential(credential);
+      final UserCredential userCredential =
+          await _auth.signInWithCredential(credential);
+
+      Navigator.push(
+        context,
+        MaterialPageRoute<void>(
+          builder: (context) => const CatalogoScreen(),
+        ),
+      );
 
       // Devuelve el usuario autenticado
       return userCredential.user;
@@ -106,9 +116,10 @@ class LoginScreen extends StatelessWidget {
               const SizedBox(height: 50),
               ElevatedButton(
                 onPressed: () async {
-                  final user = await authService.signInWithGoogle();
+                  final user = await authService.signInWithGoogle(context);
                   if (user != null) {
-                    print('Usuario autenticado con Firebase: ${user.displayName}');
+                    print(
+                        'Usuario autenticado con Firebase: ${user.displayName}');
                     print('Email: ${user.email}');
 
                     // Ejemplo: ir a la pantalla de roles
@@ -123,7 +134,8 @@ class LoginScreen extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
                   foregroundColor: Colors.black,
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
                 ),
                 child: const Text('Iniciar sesión con Google'),
               ),
