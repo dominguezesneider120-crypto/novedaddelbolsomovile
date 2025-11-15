@@ -1,51 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:myapp/catalogo.dart';
-import 'package:myapp/screens/roles_screen/roles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import '../screens/roles_screen/roles.dart';
+
 
 class GoogleAuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email', 'profile']);
 
-  /// Inicia sesión con Google y devuelve el usuario de Firebase
-  Future<User?> signInWithGoogle(context) async {
+  Future<User?> signInWithGoogle(BuildContext context) async {
     try {
-      // Paso 1: mostrar el selector de cuentas de Google
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      if (googleUser == null) return null; // usuario canceló el inicio
+      if (googleUser == null) return null;
 
-      // Paso 2: obtener los tokens de autenticación de Google
-      final GoogleSignInAuthentication googleAuth =
-          await googleUser.authentication;
-
-      // Paso 3: crear las credenciales de Firebase con esos tokens
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
       final OAuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
       );
 
-      // Paso 4: autenticar con Firebase
-      final UserCredential userCredential =
-          await _auth.signInWithCredential(credential);
+      final UserCredential userCredential = await _auth.signInWithCredential(credential);
 
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute<void>(
-          builder: (context) => const CatalogoScreen(),
+          builder: (context) => const RolesScreen(),
         ),
       );
 
-      // Devuelve el usuario autenticado
       return userCredential.user;
     } catch (e) {
-      print('Error al iniciar sesión con Google y Firebase: $e');
+      print('Error al iniciar sesión con Google: $e');
       return null;
     }
   }
 
-  /// Cierra sesión tanto en Firebase como en Google
   Future<void> signOut() async {
     await _auth.signOut();
     await _googleSignIn.signOut();
@@ -60,85 +50,112 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFFDFDFD),
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xFF000000),
-              Color(0xFF432A19),
+              Colors.white.withOpacity(0.0),
+              const Color(0xFFC9A293).withOpacity(0.2),
             ],
+            stops: const [0.8, 1.0],
           ),
         ),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                width: 250,
-                height: 250,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.white, width: 2),
+              const Spacer(flex: 3),
+              Text(
+                'NB',
+                style: GoogleFonts.playfairDisplay(
+                  fontSize: 120,
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xFF5D4037),
+                  letterSpacing: -10,
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'NOVEDAD DEL BOLSO',
+                style: GoogleFonts.roboto(
+                  color: const Color(0xFF5D4037),
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  letterSpacing: 2,
+                ),
+              ),
+              const Spacer(flex: 4),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                child: Row(
                   children: [
-                    Text(
-                      'LA NOVEDAD',
-                      style: GoogleFonts.playfairDisplay(
-                        color: Colors.white,
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
+                    Expanded(child: Divider(color: Colors.grey.shade400)),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Text(
+                        'iniciar sesión con',
+                        style: GoogleFonts.roboto(
+                          color: Colors.grey.shade600,
+                          fontSize: 14,
+                        ),
                       ),
                     ),
-                    Text(
-                      'DEL BOLSO',
-                      style: GoogleFonts.playfairDisplay(
-                        color: Colors.white,
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      'INVENTARIO',
-                      style: GoogleFonts.playfairDisplay(
-                        color: Colors.white70,
-                        fontSize: 16,
-                        letterSpacing: 2,
-                      ),
-                    ),
+                    Expanded(child: Divider(color: Colors.grey.shade400)),
                   ],
                 ),
               ),
-              const SizedBox(height: 50),
-              ElevatedButton(
-                onPressed: () async {
-                  final user = await authService.signInWithGoogle(context);
-                  if (user != null) {
-                    print(
-                        'Usuario autenticado con Firebase: ${user.displayName}');
-                    print('Email: ${user.email}');
-
-                    // Ejemplo: ir a la pantalla de roles
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => RolesScreen()),
-                    );
-                  } else {
-                    print('Inicio de sesión cancelado o fallido');
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.black,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              const SizedBox(height: 24),
+              GestureDetector(
+                onTap: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute<void>(
+                      builder: (context) => const RolesScreen(),
+                    ),
+                  );
+                 },
+                child: Container(
+                  width: 250,
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(25),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        spreadRadius: 1,
+                        blurRadius: 5,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      RichText(
+                        text: TextSpan(
+                          style: GoogleFonts.roboto(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          children: const [
+                            TextSpan(text: 'G', style: TextStyle(color: Color(0xFF4285F4))),
+                            TextSpan(text: 'o', style: TextStyle(color: Color(0xFFEA4335))),
+                            TextSpan(text: 'o', style: TextStyle(color: Color(0xFFFBBC05))),
+                            TextSpan(text: 'g', style: TextStyle(color: Color(0xFF4285F4))),
+                            TextSpan(text: 'l', style: TextStyle(color: Color(0xFF34A853))),
+                            TextSpan(text: 'e', style: TextStyle(color: Color(0xFFEA4335))),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-                child: const Text('Iniciar sesión con Google'),
               ),
+              const Spacer(flex: 2),
             ],
           ),
         ),

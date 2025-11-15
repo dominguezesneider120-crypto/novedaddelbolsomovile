@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:myapp/catalogo.dart';
-import '../catalogo.dart';
+
+import '../../Home/login.dart';
 
 class RolesScreen extends StatefulWidget {
   const RolesScreen({super.key});
@@ -10,34 +11,8 @@ class RolesScreen extends StatefulWidget {
   RolesScreenState createState() => RolesScreenState();
 }
 
-class RolesScreenState extends State<RolesScreen>
-    with SingleTickerProviderStateMixin {
+class RolesScreenState extends State<RolesScreen> {
   String? _selectedRole;
-  late AnimationController _animationController;
-  late Animation<double> _scaleAnimation;
-  bool _isAdministradoraHighlighted = false;
-  bool _isPersonalHighlighted = false;
-
-  @override
-  void initState() {
-    super.initState();
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 200),
-    );
-    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.95).animate(
-      CurvedAnimation(
-        parent: _animationController,
-        curve: Curves.easeInOut,
-      ),
-    );
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
 
   void _handleIngresarTap() {
     if (_selectedRole != null) {
@@ -57,114 +32,114 @@ class RolesScreenState extends State<RolesScreen>
 
   @override
   Widget build(BuildContext context) {
-    const Color primaryColor = Color(0xFF381C09);
-
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        elevation: 0, // Elimina la sombra del AppBar
+        backgroundColor: Colors.white, // Pone el fondo del AppBar en blanco
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Color(0xFF5D4037)), // Ícono con color
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute<void>(
+                builder: (context) => LoginScreen(),
+              ),
+            ); // Regresa a la pantalla anterior
+          },
+        ),
+      ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Roles',
-                style: GoogleFonts.oswald(
-                  fontSize: 48,
-                  fontWeight: FontWeight.bold,
-                  color: primaryColor,
+        child: Column(
+          children: [
+            const Spacer(flex: 2),
+            Column(
+              children: [
+                Text(
+                  'Roles',
+                  style: GoogleFonts.playfairDisplay(
+                    fontSize: 40,
+                    fontWeight: FontWeight.w700,
+                    color: const Color(0xFF5D4037),
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Container(
+                  width: 100,
+                  height: 2,
+                  color: const Color(0xFF5D4037),
+                ),
+              ],
+            ),
+            const Spacer(flex: 3),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _buildRoleOption(
+                  title: 'Administrador',
+                  icon: Icons.person_outline,
+                  isSelected: _selectedRole == 'Administrador',
+                  onTap: () {
+                    setState(() {
+                      _selectedRole = 'Administrador';
+                    });
+                  },
+                ),
+              ],
+            ),
+            const SizedBox(height: 30),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _buildRoleOption(
+                  title: 'Personal',
+                  icon: Icons.person_outline,
+                  isSelected: _selectedRole == 'Personal',
+                  onTap: () {
+                    setState(() {
+                      _selectedRole = 'Personal';
+                    });
+                  },
+                ),
+              ],
+            ),
+            const Spacer(flex: 4),
+            Container(
+              width: double.infinity,
+              height: 120,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.white.withOpacity(0.0),
+                    const Color(0xFFC9A293).withOpacity(0.4),
+                  ],
+                  stops: const [0.0, 1.0],
                 ),
               ),
-              const SizedBox(height: 40),
-
-              // Opción: Administradora
-              _buildRoleOption(
-                title: 'Administradora',
-                icon: Icons.person_rounded,
-                isSelected: _selectedRole == 'Administradora',
-                isHighlighted: _isAdministradoraHighlighted,
-                onTap: () {
-                  setState(() {
-                    _selectedRole = 'Administradora';
-                  });
-                },
-                onHighlightChanged: (isHighlighted) {
-                  setState(() {
-                    _isAdministradoraHighlighted = isHighlighted;
-                  });
-                },
-                seedColor: primaryColor, // Color unificado
-              ),
-              const SizedBox(height: 20),
-
-              // Opción: Personal
-              _buildRoleOption(
-                title: 'Personal',
-                icon: Icons.person_outline_rounded,
-                isSelected: _selectedRole == 'Personal',
-                isHighlighted: _isPersonalHighlighted,
-                onTap: () {
-                  setState(() {
-                    _selectedRole = 'Personal';
-                  });
-                },
-                onHighlightChanged: (isHighlighted) {
-                  setState(() {
-                    _isPersonalHighlighted = isHighlighted;
-                  });
-                },
-                seedColor: primaryColor, // Color unificado
-              ),
-              const Spacer(),
-
-              // Botón Ingresar animado
-              Center(
-                child: GestureDetector(
-                  onTapDown: (_) {
-                    _animationController.forward();
-                    setState(() {});
-                  },
-                  onTapUp: (_) {
-                    _animationController.reverse();
-                    setState(() {});
-                    _handleIngresarTap();
-                  },
-                  onTapCancel: () {
-                    _animationController.reverse();
-                    setState(() {});
-                  },
-                  child: ScaleTransition(
-                    scale: _scaleAnimation,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 80, vertical: 18),
-                      decoration: BoxDecoration(
-                        color: primaryColor,
-                        borderRadius: BorderRadius.circular(16),
-                        boxShadow: [
-                          BoxShadow(
-                            color: primaryColor.withAlpha(77),
-                            spreadRadius: 2,
-                            blurRadius: 15,
-                            offset: const Offset(0, 5),
-                          ),
-                        ],
-                      ),
-                      child: Text(
-                        'Ingresar',
-                        style: GoogleFonts.roboto(
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
+              child: Center(
+                child: ElevatedButton(
+                  onPressed: _handleIngresarTap,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF5D4037),
+                    padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                  ),
+                  child: Text(
+                    'INGRESAR',
+                    style: GoogleFonts.roboto(
+                      fontSize: 16,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -175,61 +150,35 @@ class RolesScreenState extends State<RolesScreen>
     required IconData icon,
     required bool isSelected,
     required VoidCallback onTap,
-    required Color seedColor,
-    bool isHighlighted = false,
-    ValueChanged<bool>? onHighlightChanged,
   }) {
-    final Color backgroundColor = isHighlighted
-        ? seedColor.withAlpha(204)
-        : (isSelected ? seedColor : Colors.white);
-    final Color contentColor =
-        (isHighlighted || isSelected) ? Colors.white : seedColor;
-
-    return InkWell(
+    return GestureDetector(
       onTap: onTap,
-      onHighlightChanged: onHighlightChanged,
-      splashColor: seedColor.withAlpha(30),
-      highlightColor: Colors.transparent, // Usamos nuestro propio efecto
-      borderRadius: BorderRadius.circular(16),
       child: Container(
-        padding: const EdgeInsets.all(20),
+        width: 180,
+        height: 180,
         decoration: BoxDecoration(
-          color: backgroundColor,
-          borderRadius: BorderRadius.circular(16),
+          color: isSelected ? const Color(0xFFF5F5F5) : Colors.white,
+          borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: isSelected ? seedColor : Colors.grey[300]!,
-            width: 1.5,
+            color: isSelected ? const Color(0xFF5D4037) : Colors.grey.shade300,
+            width: isSelected ? 2 : 1.5,
           ),
-          boxShadow: (isSelected || isHighlighted)
-              ? [
-                  BoxShadow(
-                    color: seedColor.withAlpha(51),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  )
-                ]
-              : [
-                  BoxShadow(
-                    color: Colors.grey.withAlpha(25),
-                    blurRadius: 10,
-                    offset: const Offset(0, 2),
-                  )
-                ],
         ),
-        child: Row(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
               icon,
-              size: 40,
-              color: contentColor,
+              size: 80,
+              color: Colors.grey.shade600,
             ),
-            const SizedBox(width: 24),
+            const SizedBox(height: 10),
             Text(
               title,
               style: GoogleFonts.roboto(
-                fontSize: 20,
+                fontSize: 18,
                 fontWeight: FontWeight.w500,
-                color: contentColor,
+                color: Colors.grey.shade800,
               ),
             ),
           ],
